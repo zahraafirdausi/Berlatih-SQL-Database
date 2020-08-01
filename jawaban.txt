@@ -1,0 +1,112 @@
+NOMOR 1
+CREATE DATABASE myshop;
+Query OK, 1 row affected (0.156 sec)
+USE myshop;
+Database changed
+mysql [myshop]>
+
+
+NOMOR 2
+mysql [myshop]> CREATE TABLE users (
+    -> id INT AUTO_INCREMENT KEY,
+    -> name varchar (255),
+    -> email varchar (255),
+    -> password varchar (255)
+    -> );
+Query OK, 0 rows affected (0.502 sec)
+
+mysql [myshop]> CREATE TABLE items (
+    -> id INT AUTO_INCREMENT KEY,
+    -> name varchar (255),
+    -> description varchar (255),
+    -> price INT,
+    -> stock INT,
+    -> category_id INT
+    -> );
+Query OK, 0 rows affected (0.554 sec)
+
+mysql [myshop]> CREATE TABLE categories (
+    -> id INT AUTO_INCREMENT KEY,
+    -> name varchar (255)
+    -> );
+Query OK, 0 rows affected (0.269 sec)
+
+mysql [myshop]> ALTER TABLE items ADD FOREIGN KEY(category_id) REFERENCES categories(id);
+Query OK, 0 rows affected (0.857 sec)
+
+
+NOMOR 3
+mysql [myshop]> INSERT INTO users(name, email, password) VALUES ("John Doe", "john@doe.com", "john123");
+Query OK, 1 row affected (0.180 sec)
+mysql [myshop]> INSERT INTO users(name, email, password) VALUES ("Jane Doe", "jane@doe.com", "jenita123");
+Query OK, 1 row affected (0.059 sec)
+
+mysql [myshop]> INSERT INTO categories(name) VALUES ("gadget");
+Query OK, 1 row affected (0.200 sec)
+mysql [myshop]> INSERT INTO categories(name) VALUES ("cloth");
+Query OK, 1 row affected (0.052 sec)
+mysql [myshop]> INSERT INTO categories(name) VALUES ("men");
+Query OK, 1 row affected (0.057 sec)
+mysql [myshop]> INSERT INTO categories(name) VALUES ("women");
+Query OK, 1 row affected (0.210 sec)
+mysql [myshop]> INSERT INTO categories(name) VALUES ("branded");
+Query OK, 1 row affected (0.045 sec)
+
+mysql [myshop]> INSERT INTO items(name, description, price, stock, category_id) VALUES ("Sumsang b50", "hape keren dari merek sumsang", 4000000, 100, 1);
+Query OK, 1 row affected (0.057 sec)
+mysql [myshop]> INSERT INTO items(name, description, price, stock, category_id) VALUES ("Uniklooh", "baju keren dari brand ternama", 500000, 50, 2);
+Query OK, 1 row affected (0.057 sec)
+mysql [myshop]> INSERT INTO items(name, description, price, stock, category_id) VALUES ("IMHO Watch", "jam tangan anak yang jujur banget", 2000000, 10, 1);
+Query OK, 1 row affected (0.037 sec)
+
+
+NOMOR 4
+a. mysql [myshop]> SELECT name, email FROM users;
++----------+--------------+
+| name     | email        |
++----------+--------------+
+| John Doe | john@doe.com |
+| Jane Doe | jane@doe.com |
++----------+--------------+
+2 rows in set (0.127 sec)
+
+b. mysql [myshop]> SELECT name,description,price,stock,category_id FROM items WHERE price>1000000;
++-------------+-----------------------------------+---------+-------+-------------+
+| name        | description                       | price   | stock | category_id |
++-------------+-----------------------------------+---------+-------+-------------+
+| Sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |
+| IMHO Watch  | jam tangan anak yang jujur banget | 2000000 |    10 |           1 |
++-------------+-----------------------------------+---------+-------+-------------+
+2 rows in set (0.096 sec)
+
+mysql [myshop]> SELECT * FROM items WHERE name LIKE "uniklo%";
++----+----------+-------------------------------+--------+-------+-------------+
+| id | name     | description                   | price  | stock | category_id |
++----+----------+-------------------------------+--------+-------+-------------+
+|  2 | Uniklooh | baju keren dari brand ternama | 500000 |    50 |           2 |
++----+----------+-------------------------------+--------+-------+-------------+
+1 row in set (0.000 sec)
+
+mysql [myshop]> SELECT items.name, items.description, items.price, items.stock, items.category_id, categories.name FROM items LEFT JOIN categories ON categories.id=items.category_id;
++-------------+-----------------------------------+---------+-------+-------------+--------+
+| name        | description                       | price   | stock | category_id |kategori|
++-------------+-----------------------------------+---------+-------+-------------+--------+
+| Sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 | gadget |
+| Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 | cloth  |
+| IMHO Watch  | jam tangan anak yang jujur banget | 2000000 |    10 |           1 | gadget |
++-------------+-----------------------------------+---------+-------+-------------+--------+
+3 rows in set (0.056 sec)
+
+
+NOMOR 5
+mysql [myshop]> UPDATE items SET price=2500000 WHERE name="Sumsang b50";
+Query OK, 1 row affected (0.284 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql [myshop]> SELECT * FROM items WHERE name="Sumsang b50";
++----+-------------+-------------------------------+---------+-------+-------------+
+| id | name        | description                   | price   | stock | category_id |
++----+-------------+-------------------------------+---------+-------+-------------+
+|  1 | Sumsang b50 | hape keren dari merek sumsang | 2500000 |   100 |           1 |
++----+-------------+-------------------------------+---------+-------+-------------+
+1 row in set (0.021 sec)
